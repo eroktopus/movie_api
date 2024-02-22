@@ -6,6 +6,9 @@ http.createServer((request, response) => {
     // Parse the request URL
     const parsedUrl = url.parse(request.url, true);
 
+    // Log the requested URL
+    console.log('Requested URL:', parsedUrl);
+
     const logData = `${parsedUrl.pathname} - ${new Date().toISOString()}\n`;
     fs.appendFile('log.txt', logData, (err) => {
         if (err) {
@@ -15,9 +18,11 @@ http.createServer((request, response) => {
     
     // Check if the pathname contains the word "documentation"
     if (parsedUrl.pathname.includes('documentation')) {
-        
+        console.log('Documentation requested');
+
         fs.readFile('documentation.html', (err, data) => {
             if (err) {
+                console.error('Error reading documentation file:', err);
                 response.writeHead(500, {'Content-Type': 'text/plain'});
                 response.end('Internal Server Error');
             } else {
@@ -26,9 +31,11 @@ http.createServer((request, response) => {
             }
         });
     } else {
-       
+        console.log('Index requested');
+
         fs.readFile('index.html', (err, data) => {
             if (err) {
+                console.error('Error reading index file:', err);
                 response.writeHead(500, {'Content-Type': 'text/plain'});
                 response.end('Internal Server Error');
             } else {
@@ -38,3 +45,5 @@ http.createServer((request, response) => {
         });
     }
 }).listen(8080);
+
+console.log('Server running at http://localhost:8080/');
