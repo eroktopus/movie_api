@@ -6,7 +6,7 @@ http.createServer((request, response) => {
     // Parse the request URL
     const parsedUrl = url.parse(request.url, true);
 
-    // Log the requested URL
+
     console.log('Requested URL:', parsedUrl);
 
     const logData = `${parsedUrl.pathname} - ${new Date().toISOString()}\n`;
