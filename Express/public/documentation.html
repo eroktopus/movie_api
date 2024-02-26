@@ -13,6 +13,148 @@
     movies, directors, and genres. Users will be able to sign up, update their
     personal information, and create a list of their favorite movies.
 </p>
+
+<p>
+/* /movies responds with a JSON representation of a list of movies when accessed. It sends a status code of 200 (OK) along 
+with the JSON data.*/
+
+http://localhost:8080/movies
+
+this url will GET the list of movies in JSON format it will look like this:
+
+{
+    "Title": "The Big Lebowski",
+    "Director": {
+      "Name": "Joel Coen",
+      "Bio": "Joel Daniel Coen (born November 29, 1954)[1] and Ethan Jesse Coen (born September 21, 1957),[2] collectively known as the Coen brothers (/ˈkoʊən/ KOH-ən), are an American filmmaking duo. Their films span many genres and styles, which they frequently subvert or parody.[3] Their most acclaimed works include Blood Simple (1984), Raising Arizona (1987), Miller's Crossing (1990), Barton Fink (1991), Fargo (1996), The Big Lebowski (1998), O Brother, Where Art Thou? (2000), No Country for Old Men (2007), A Serious Man (2009), True Grit (2010) and Inside Llewyn Davis (2013). Many of their films are distinctly American, often examining the culture of the American South and American West in both modern and historical contexts.",
+      "Birth": 1954
+    },
+    "Genre": {
+      "Name": "Comedy",
+      "Description": "A comedy film is a category of film that emphasizes humor. These films are designed to amuse audiences and make them laugh."
+    }
+
+    /* When a GET request is made to /movies/:title, the server extracts the title parameter from the request URL.
+    It then searches the movies array for a movie object whose title property matches the provided title.
+    If a movie with the specified title is found (movie is truthy), the server responds with a status code of 200 (OK) and sends back a JSON representation of the movie object.
+    If no movie with the specified title is found (movie is falsy), the server responds with a status code of 400 (Bad Request) and sends the message 'no such movie' as plain text in the response body.*/
+
+    http://localhost:8080/movies/The%20Empire%20Strikes%20Back
+
+    this url will GET a single movie in JSON format if it is in the database. It will look like this:
+
+    { "Title": "The Empire Strikes Back",
+"Director": {
+"Name": "Irvin Kerschner",
+"Bio": "Irvin Kershner (born Isadore Kershner; April 29, 1923 – November 27, 2010) was an American director for film and television. Early in his career as a filmmaker he directed quirky, independent drama films, while working as a lecturer at the University of Southern California. Later, he transitioned to high-budget blockbusters such as The Empire Strikes Back, the James Bond adaptation Never Say Never Again and RoboCop 2. Through the course of his career, he received numerous accolades, including being nominated for both a Primetime Emmy Award and a Palme d'Or.",
+"Birth": 1923
+},
+"Genre": {
+"Name": "Sci Fi",
+"Description": "Science fiction (or sci-fi or SF) is a film genre that uses speculative, fictional science-based depictions of phenomena that are not fully accepted by mainstream science, such as extraterrestrial lifeforms, spacecraft, robots, cyborgs, mutants, interstellar travel, time travel, or other technologies. Science fiction films have often been used to focus on political or social issues, and to explore philosophical issues like the human condition."
+} }
+
+/* When a GET request is made to /movies/genre/:genreName, the server extracts the genreName parameter from the request URL.
+It then searches the movies array for a movie object whose genre's name matches the provided genreName.
+If a genre with the specified name is found (genre is truthy), the server responds with a status code of 200 (OK) and sends back a JSON representation of the genre object.
+If no genre with the specified name is found (genre is falsy), the server responds with a status code of 400 (Bad Request) and sends the message 'no movies found for the specific genre' as plain text in the response body. */
+
+http://localhost:8080/movies/genre/SciFi
+
+this url will GET a genre name and description in JSON format if it is in the database. It will look like this:
+
+{ "Name": "SciFi",
+"Description": "Science fiction (or sci-fi or SF) is a film genre that uses speculative, fictional science-based depictions of phenomena that are not fully accepted by mainstream science, such as extraterrestrial lifeforms, spacecraft, robots, cyborgs, mutants, interstellar travel, time travel, or other technologies. Science fiction films have often been used to focus on political or social issues, and to explore philosophical issues like the human condition."
+}
+
+/* When a GET request is made to /movies/directors/:directorName, the server extracts the directorName parameter from the request URL.
+It then searches the movies array for a movie object whose director's name matches the provided directorName.
+If a director with the specified name is found (director is truthy), the server responds with a status code of 200 (OK) and sends back a JSON representation of the director object.
+If no director with the specified name is found (director is falsy), the server responds with a status code of 400 (Bad Request) and sends the message 'no movies found for the specific director' as plain text in the response body.*/
+
+http://localhost:8080/movies/directors/Wes%20Anderson
+
+this url will GET a director name, bio and date of birth in JSON format if they are in the database. It will look like this:
+
+{ "Name": "Wes Anderson",
+"Bio": "Wesley Wales Anderson (born May 1, 1969) is an American filmmaker. His films are known for their eccentricity, unique visual and narrative styles,[1] and frequent use of ensemble casts. They often contain themes of grief, loss of innocence, and dysfunctional families. Some critics cite Anderson as a modern-day example of an auteur. Three of his films[a] have appeared in BBC Culture's 2016 poll of the greatest films since 2000.",
+"Birth": 1969 }
+
+/* When a POST request is made to /users, the server expects to receive data in the request body representing a new user object.
+It retrieves the new user object from req.body.
+It checks if the new user object contains a name property.
+If the new user object contains a name property, it generates a unique identifier for the user (using uuid.v4()), adds the user to the users array, and responds with a status code of 201 (Created) along with the JSON representation of the newly created user.
+If the new user object does not contain a name property, it responds with a status code of 400 (Bad Request) and sends the message 'users need names' as plain text in the response body.*/
+
+http://localhost:8080/users
+
+this url will POST a new user to the database and assign them a user id. It will look like this:
+
+{
+    "name": "Kim Updated Name",
+    "favoriteMovies": [],
+    "id": "1bcbe0b1-097b-435b-8557-63d6d7e6f003"
+}
+
+/* When a PUT request is made to /users/:id, the server expects to receive data in the request body representing updated information for the user with the specified id.
+It extracts the id parameter from the request URL (req.params).
+It retrieves the updated user information from req.body.
+It searches the users array for a user object whose id matches the specified id.
+If a user with the specified id is found, it updates the user's name with the new name provided in the request body, responds with a status code of 200 (OK), and sends back the JSON representation of the updated user.
+If no user with the specified id is found, it responds with a status code of 400 (Bad Request) and sends the message 'no such user' as plain text in the response body.*/
+
+http://localhost:8080/users/2
+
+This url will PUT updated information about the user into the database. It will look like this:
+
+"id": 2,
+"name": "Kim Updated Name",
+"favoriteMovies": [
+"The Empire Strikes Back"
+
+/* When a POST request is made to /users/:id/:movieTitle, the server expects to receive the unique identifier of a user (id) and the title of a movie (movieTitle) in the request parameters.
+It extracts the id and movieTitle parameters from the request URL (req.params).
+It searches the users array for a user object whose id matches the specified id.
+If a user with the specified id is found, it adds the movieTitle to the user's list of favorite movies, responds with a status code of 200 (OK), and sends a message confirming that the movie has been added to the user's array.
+If no user with the specified id is found, it responds with a status code of 400 (Bad Request) and sends the message 'no such user' as plain text in the response body.*/ 
+
+http://localhost:8080/users/2/Jaws
+
+this url will POST a new movie to the user's list. The response will look like this:
+
+Jaws has been added to user 2's array
+
+/* When a DELETE request is made to /users/:id/:movieTitle, the server expects to receive the unique identifier of a user (id) and the title of a movie (movieTitle) in the request parameters.
+It extracts the id and movieTitle parameters from the request URL (req.params).
+It searches the users array for a user object whose id matches the specified id.
+If a user with the specified id is found, it removes the movieTitle from the user's list of favorite movies using the filter method, responds with a status code of 200 (OK), and sends a message confirming that the movie has been removed from the user's array.
+If no user with the specified id is found, it responds with a status code of 400 (Bad Request) and sends the message 'no such user' as plain text in the response body.*/ 
+
+http://localhost:8080/users/2/Jaws
+
+this url will DELETE a movie from the user's list if the user is found. The response will look like this:
+
+Jaws has been removed from user 2's array
+
+/* When a DELETE request is made to /users/:id, the server expects to receive the unique identifier of a user (id) in the request parameters.
+It extracts the id parameter from the request URL (req.params).
+It searches the users array for a user object whose id matches the specified id.
+If a user with the specified id is found, it removes the user from the users array using the filter method, responds with a status code of 200 (OK), and sends a message confirming that the user has been deleted.
+If no user with the specified id is found, it responds with a status code of 400 (Bad Request) and sends the message 'no such user' as plain text in the response body.*/ 
+
+http://localhost:8080/users/1
+
+this url will DELETE a user from the database if they choose to. The response will look like this:
+
+user 1 has been deleted
+
+</p>
+
+
+
+
+
+
 </body>
 
 </html>
