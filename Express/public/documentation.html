@@ -59,6 +59,7 @@ It then searches the movies array for a movie object whose genre's name matches 
 If a genre with the specified name is found (genre is truthy), the server responds with a status code of 200 (OK) and sends back a JSON representation of the genre object.
 If no genre with the specified name is found (genre is falsy), the server responds with a status code of 400 (Bad Request) and sends the message 'no movies found for the specific genre' as plain text in the response body. */
 
+
 http://localhost:8080/movies/genre/SciFi
 
 this url will GET a genre name and description in JSON format if it is in the database. It will look like this:
