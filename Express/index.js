@@ -16,7 +16,13 @@ mongoose.connect('mongodb://localhost:27017/mfDB');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+
+let auth = require('./auth')(app);
+
+const passport = require('passport');
+require('./passport');
 
 // Read all users
 app.get('/users', async (req, res) => {
@@ -125,7 +131,7 @@ app.post('/users', async (req, res) => {
 });
 
 // Read all movies
-app.get('/movies', async (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }),async (req, res) => {
   try {
     const movies = await Movie.find();
     res.status(200).json(movies);
@@ -231,6 +237,31 @@ app.put('/users/:id', (req, res) => {
     res.status(400).send('no such user')
   }
 })
+
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  // CONDITION TO CHECK ADDED HERE
+  if(req.user.Username !== req.params.Username){
+      return res.status(400).send('Permission denied');
+  }
+  // CONDITION ENDS
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+      $set:
+      {
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+      }
+  },
+      { new: true }) // This line makes sure that the updated document is returned
+      .then((updatedUser) => {
+          res.json(updatedUser);
+      })
+      .catch((err) => {
+          console.log(err);
+          res.status(500).send('Error: ' + err);
+      })
+});
   
   //CREATE
   app.post('/users/:id/:movieTitle', (req, res) => {
