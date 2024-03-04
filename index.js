@@ -1,4 +1,5 @@
 const express = require('express');
+// const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -16,7 +17,11 @@ const User = Models.User;
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/mfDB');
+mongoose.connect('process.env.CONNECTION_URI'), { useNewUrlParser: true, useUnifiedTopology: true });
+
+// mongoose.connect('mongodb://localhost:27017/mfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// mongoose.connect('mongodb://localhost:27017/mfDB');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
