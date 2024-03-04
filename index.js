@@ -17,7 +17,7 @@ const User = Models.User;
 
 const app = express();
 
-mongoose.connect('process.env.CONNECTION_URI'), { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://erikemond:Charlito7378@myflixdb.29qwfvw.mongodb.net/myFlixDB?retryWrites=true&w=majority&appName=myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // mongoose.connect('mongodb://localhost:27017/mfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
