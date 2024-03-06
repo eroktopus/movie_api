@@ -76,7 +76,6 @@ app.post('/users',
             })
             .then((user) => { res.status(201).json(user) })
             .catch((error) => {
-              console.error(error);
               res.status(500).send('Error: ' + error);
             });
         }
@@ -97,7 +96,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
       $set:
       {
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: User.hashPassword(req.body.Password),
           Email: req.body.Email,
           Birthday: req.body.Birthday
       }
@@ -118,24 +117,22 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),async (req, 
     const movies = await Movie.find();
     res.status(200).json(movies);
   } catch (error) {
-    console.error(error);
     res.status(500).send('Error: ' + error);
   }
 });
 
 // Read all users
-app.get('/users', async (req, res) => {
+app.get('/users', passport.authenticate('jwt', { session: false }),async (req, res) => {
   try {
     const users = await User.find();
     res.status(200).json(users);
   } catch (error) {
-    console.error(error);
     res.status(500).send('Error: ' + error);
   }
 });
 
 // Get a user by username
-app.get('/users/:Username', async (req, res) => {
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }),async (req, res) => {
   try {
     const user = await User.findOne({ Username: req.params.Username });
     if (!user) {
@@ -143,35 +140,12 @@ app.get('/users/:Username', async (req, res) => {
     }
     res.json(user);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
-  }
-});
-
-// Update a user's info, by username
-app.put('/users/:Username', async (req, res) => {
-  try {
-    const updatedUser = await User.findOneAndUpdate(
-      { Username: req.params.Username },
-      {
-        $set: {
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday
-        }
-      },
-      { new: true }
-    );
-    res.json(updatedUser);
-  } catch (error) {
-    console.error(error);
     res.status(500).send('Error: ' + error);
   }
 });
 
 // Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }),async (req, res) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
       { Username: req.params.Username },
@@ -180,13 +154,12 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
     );
     res.json(updatedUser);
   } catch (error) {
-    console.error(error);
     res.status(500).send('Error: ' + error);
   }
 });
 
 // Remove a movie from a user's list of favorites
-app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
+app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }),async (req, res) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
       { Username: req.params.Username },
@@ -195,13 +168,12 @@ app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
     );
     res.json(updatedUser);
   } catch (error) {
-    console.error(error);
     res.status(500).send('Error: ' + error);
   }
 });
 
 // Delete a user by username
-app.delete('/users/:Username', async (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),async (req, res) => {
   try {
     const deletedUser = await User.findOneAndDelete({ Username: req.params.Username });
     if (!deletedUser) {
@@ -209,7 +181,6 @@ app.delete('/users/:Username', async (req, res) => {
     }
     res.status(200).send(req.params.Username + ' was deleted.');
   } catch (error) {
-    console.error(error);
     res.status(500).send('Error: ' + error);
   }
 });
@@ -224,7 +195,6 @@ app.get('/movies/:title', async (req, res) => {
     console.log('Found movie:', movie); // Log the movie object if found
     res.status(200).json(movie); // Respond with the movie object
   } catch (error) {
-    console.error('Error:', error); // Log any database query errors
     res.status(500).send('Error: ' + error);
   }
 });
@@ -243,7 +213,6 @@ app.get('/genres/:genreName', async (req, res) => {
     // Send the genre object
     res.status(200).json(genre);
   } catch (error) {
-    console.error('Error:', error);
     res.status(500).send('Error: ' + error);
   }
 });
@@ -263,90 +232,15 @@ app.get('/directors/:directorName', async (req, res) => {
     // Send the director object
     res.status(200).json(director);
   } catch (error) {
-    console.error('Error:', error);
     res.status(500).send('Error: ' + error);
   }
 });
-
-//UPDATE
-app.put('/users/:id', (req, res) => {
-  const { id } = req.params;
-  const updatedUser = req.body;
-
-  let user = users.find( user => user.id == id );
-
-  if (user) {
-    user.name = updatedUser.name;
-    res.status(200).json(user);
-  } else {
-    res.status(400).send('no such user')
-  }
-})
-  
-  //CREATE
-  app.post('/users/:id/:movieTitle', (req, res) => {
-    const { id, movieTitle } = req.params;
-
-    let user = users.find( user => user.id == id );
-  
-    if (user) {
-      user.favoriteMovies.push(movieTitle);
-      res.status(200).send(`${movieTitle} has been added to user ${id}'s array`);
-    } else {
-      res.status(400).send('no such user')
-    }
-  })
-
-  //DELETE
-  app.delete('/users/:id/:movieTitle', (req, res) => {
-    const { id, movieTitle } = req.params;
-
-    let user = users.find( user => user.id == id );
-  
-    if (user) {
-      user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle);
-      res.status(200).send(`${movieTitle} has been removed from user ${id}'s array`);
-    } else {
-      res.status(400).send('no such user')
-    }
-  })
-
-   //DELETE
-   app.delete('/users/:id', (req, res) => {
-    const { id } = req.params;
-
-    let user = users.find( user => user.id == id );
-  
-    if (user) {
-      users = users.filter( user => user.id != id);
-      res.status(200).send(` user ${id} has been deleted `);
-    } else {
-      res.status(400).send('no such user')
-    }
-  })
 
   // GET requests
   app.get('/', (req, res) => {
     res.send('myFlix are better than yours!');
   });
   
-  //read
-  app.get('/movies', (req, res) => {
-    res.status(200).json(movies);
-  });
-
-  //READ
-  app.get('/movies/:title', (req, res) => {
-    const { title } = req.params;
-    const movie = movies.find( movie => movie.Title === title);
-
-    if (movie) {
-      res.status(200).json(movie);
-    } else {
-      res.status(400).send('no such movie')
-    }
-  });
-
   //READ
   app.get('/movies/genre/:genreName', (req, res) => {
     const { genreName } = req.params;
