@@ -243,35 +243,7 @@ app.get('/directors/:directorName', async (req, res) => {
   app.get('/', (req, res) => {
     res.send('myFlix are better than yours!');
   });
-  
-  //READ
-  app.get('/movies/genre/:genreName', (req, res) => {
-    const { genreName } = req.params;
-    const genre = movies.find( movie => movie.Genre.Name === genreName).Genre;
-
-    if (genre) {
-      res.status(200).json(genre);
-    } else {
-      res.status(400).send('no movies found for the specific genre')
-    }
-  });
-
-  //READ
-  app.get('/movies/directors/:directorName', (req, res) => {
-    const { directorName } = req.params;
-    const director = movies.find( movie => movie.Director.Name === directorName).Director;
-
-    if (director) {
-      res.status(200).json(director);
-    } else {
-      res.status(400).send('no movies found for the specific director')
-    }
-  });
-
-  app.get('/users', (req, res) => {
-    res.json(users);
-  });
-  
+   
   app.use(express.static('public'));
 
   app.use((err, req, res, next) => {
