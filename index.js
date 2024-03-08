@@ -13,8 +13,7 @@ const { check, validationResult } = require('express-validator');
 const Genre = require('./models.js').Genre;
 const Director = require('./models.js').Director;
 const Movie = require('./models.js').Movie;
-const User = require('./models.js');User;
-
+const User = Models.User;
 
 const app = express();
 
@@ -90,29 +89,6 @@ app.post('/users',
       });
   });
 
-// Read all users
-app.get('/users', passport.authenticate('jwt', { session: false }),async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).send('Error: ' + error);
-  }
-});
-
-// Get a user by username
-app.get('/users/:Username', passport.authenticate('jwt', { session: false }),async (req, res) => {
-  try {
-    const user = await User.findOne({ Username: req.params.Username });
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
-    res.json(user);
-  } catch (error) {
-    res.status(500).send('Error: ' + error);
-  }
-});
-  
   app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     // CONDITION TO CHECK ADDED HERE
     if(req.user.Username !== req.params.Username){
@@ -143,6 +119,29 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),async (req, 
   try {
     const movies = await Movie.find();
     res.status(200).json(movies);
+  } catch (error) {
+    res.status(500).send('Error: ' + error);
+  }
+});
+
+// Read all users
+app.get('/users', passport.authenticate('jwt', { session: false }),async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).send('Error: ' + error);
+  }
+});
+
+// Get a user by username
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }),async (req, res) => {
+  try {
+    const user = await User.findOne({ Username: req.params.Username });
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    res.json(user);
   } catch (error) {
     res.status(500).send('Error: ' + error);
   }
