@@ -13,7 +13,8 @@ const { check, validationResult } = require('express-validator');
 const Genre = require('./models.js').Genre;
 const Director = require('./models.js').Director;
 const Movie = require('./models.js').Movie;
-const User = Models.User;
+const Users = require('./userModel');
+
 
 const app = express();
 
