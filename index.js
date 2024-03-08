@@ -95,7 +95,7 @@ app.post('/users',
         return res.status(400).send('Permission denied');
     }
     // CONDITION ENDS
-    await Users.findOneAndUpdate({ Username: req.params.Username }, {
+    await User.findOneAndUpdate({ Username: req.params.Username }, {
         $set:
         {
             Username: req.body.Username,
