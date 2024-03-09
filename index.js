@@ -21,9 +21,6 @@ mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifie
 
 // mongoose.connect('mongodb://localhost:27017/mfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-
-// mongoose.connect('mongodb://localhost:27017/mfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
 // mongoose.connect('mongodb://localhost:27017/mfDB');
 
 app.use(express.json());
@@ -115,7 +112,7 @@ app.post('/users',
 });
 
 // Read all movies
-app.get('/movies', passport.authenticate('jwt', { session: false }),async (req, res) => {
+app.get('/movies',async (req, res) => {
   try {
     const movies = await Movie.find();
     res.status(200).json(movies);
