@@ -112,7 +112,7 @@ app.post('/users',
 });
 
 // Read all movies
-app.get('/movies', async (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }),  async (req, res) => {
   try {
     const movies = await Movie.find();
     res.status(200).json(movies);
