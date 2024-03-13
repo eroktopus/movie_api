@@ -32,6 +32,13 @@ app.use(morgan('dev'));
 const cors = require('cors');
 app.use(cors());
 
+app.options('/users', (req, res) => {
+  res.header('Access-Control-Allow-Methods', 'POST'); // Add allowed methods
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Add allowed headers
+  res.status(200).send();
+});
+
+
 let auth = require('./auth')(app);
 
 // Create a new user
