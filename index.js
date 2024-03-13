@@ -15,6 +15,7 @@ const Director = require('./models.js').Director;
 const Movie = require('./models.js').Movie;
 const User = Models.User;
 
+const cors = require('cors');
 const app = express();
 
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -33,14 +34,19 @@ const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://localhost:3000', 'http://localhost:1234', 'http://testsite.com'];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
+  origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
+  exposedHeaders: ['Content-Length', 'X-Content-Length'], // Specify the exposed headers
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  preflightContinue: false, // Disable preflight continuation
+  optionsSuccessStatus: 200 // Set the preflight response status code
 }));
 
 let auth = require('./auth')(app);
@@ -249,15 +255,20 @@ app.get('/directors/:directorName', async (req, res) => {
   });
   
   const port = process.env.PORT || 8080;
-  app.listen(port, '0.0.0.0',() => {
-   console.log('Listening on Port ' + port);
-  });
-
-
-  // // listening for requests
-  // app.listen(8080, () => {
-  //   console.log('Your app is listening on port 8080.');
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
+});
+  
+  
+  
+  
+  
+  // const port = process.env.PORT || 8080;
+  // app.listen(port, '0.0.0.0',() => {
+  //  console.log('Listening on Port ' + port);
   // });
 
+
+  
 
 
