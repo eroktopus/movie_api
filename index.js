@@ -36,7 +36,7 @@ app.use(cors({
   origin: (origin, callback) => {
     if(!origin) return callback(null, true);
     if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
       return callback(new Error(message ), false);
     }
     return callback(null, true);
@@ -45,7 +45,7 @@ app.use(cors({
 
 let auth = require('./auth')(app);
 
-// Create a new userx`x 
+// Create a new user
 app.post('/users',
   [
     check('Username', 'Username is required').isLength({min: 5}),
@@ -258,6 +258,3 @@ app.get('/directors/:directorName', async (req, res) => {
   // app.listen(8080, () => {
   //   console.log('Your app is listening on port 8080.');
   // });
-
-
-
