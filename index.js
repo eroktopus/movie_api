@@ -1,5 +1,6 @@
 const express = require('express');
-// const { MongoClient } = require('mongodb');
+const cors = require('cors');
+const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -29,7 +30,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-const cors = require('cors');
 app.use(cors());
 
 let auth = require('./auth')(app);
