@@ -1,138 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>myFlix</title>
-    <link rel="stylesheet" href="Application/styles.css">
-
+    <link rel="stylesheet" href="Application/styles.css" />
   </head>
- 
- <body>
-     
-<h1>This will be the best movie database ever.</h1>
 
-<table>
-  <tr>
-    <th>Request</th>
-    <th>URL</th>
-    <th>Response</th>
-  </tr>
-  <tr>
-    <td>Return a list of ALL movies to the user</td>
-    <td>http://localhost:8080/movies</td>
-    <td>    "Title": "The Big Lebowski",<br>
-      "Director": {<br>
-        "Name": "Joel Coen",<br>
-        "Bio": "Joel Daniel Coen (born November 29, 1954)[1] and Ethan Jesse Coen (born September 21, 1957),[2] collectively known as the Coen brothers (/ˈkoʊən/ KOH-ən), are an American filmmaking duo. Their films span many genres and styles, which they frequently subvert or parody.[3] Their most acclaimed works include Blood Simple (1984), Raising Arizona (1987), Miller's Crossing (1990), Barton Fink (1991), Fargo (1996), The Big Lebowski (1998), O Brother, Where Art Thou? (2000), No Country for Old Men (2007), A Serious Man (2009), True Grit (2010) and Inside Llewyn Davis (2013). Many of their films are distinctly American, often examining the culture of the American South and American West in both modern and historical contexts.",
-        "Birth": 1954<br>
-      },<br>
-      "Genre": {<br>
-        "Name": "Comedy",<br>
-        "Description": "A comedy film is a category of film that emphasizes humor. These films are designed to amuse audiences and make them laugh."
-      }<br>
-    {
-      "Title": "Rushmore",<br>
-      "Director": {<br>
-        "Name": "Wes Anderson",<br>
-        "Bio": "Wesley Wales Anderson (born May 1, 1969) is an American filmmaker. His films are known for their eccentricity, unique visual and narrative styles,[1] and frequent use of ensemble casts. They often contain themes of grief, loss of innocence, and dysfunctional families. Some critics cite Anderson as a modern-day example of an auteur. Three of his films[a] have appeared in BBC Culture's 2016 poll of the greatest films since 2000.",<br>
-        "Birth": 1969<br>
-      },
-      "Genre": {<br>
-        "Name": "Comedy",<br>
-        "Description": "A comedy film is a category of film that emphasizes humor. These films are designed to amuse audiences and make them laugh."<br>
-      }
-    },
-    </td>
-  </tr>
-  <tr>
-    <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
-    <td>http://localhost:8080/movies/The%20Empire%20Strikes%20Back </td>
-    <td>{
-      "Title": "The Empire Strikes Back",<br>
-      "Director": {<br>
-        "Name": "Irvin Kerschner",<br>
-        "Bio": "Irvin Kershner (born Isadore Kershner; April 29, 1923 – November 27, 2010) was an American director for film and television. Early in his career as a filmmaker he directed quirky, independent drama films, while working as a lecturer at the University of Southern California. Later, he transitioned to high-budget blockbusters such as The Empire Strikes Back, the James Bond adaptation Never Say Never Again and RoboCop 2. Through the course of his career, he received numerous accolades, including being nominated for both a Primetime Emmy Award and a Palme d'Or.",<br>
-        "Birth": 1923<br>
-      },<br>
-      "Genre": {<br>
-        "Name": "Sci Fi",<br>
-        "Description": "Science fiction (or sci-fi or SF) is a film genre that uses speculative, fictional science-based depictions of phenomena that are not fully accepted by mainstream science, such as extraterrestrial lifeforms, spacecraft, robots, cyborgs, mutants, interstellar travel, time travel, or other technologies. Science fiction films have often been used to focus on political or social issues, and to explore philosophical issues like the human condition."<br>
-      }
-    }
-  </td>
-  </tr>
+  <body>
+    <h1>This will be the best movie database ever.</h1>
 
-  <tr>
-    <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
-    <td>http://localhost:8080/movies/genre/SciFi </td>
-    <td>{
-      "Name": "SciFi",<br>
-      "Description": "Science fiction (or sci-fi or SF) is a film genre that uses speculative, fictional science-based depictions of phenomena that are not fully accepted by mainstream science, such as extraterrestrial lifeforms, spacecraft, robots, cyborgs, mutants, interstellar travel, time travel, or other technologies. Science fiction films have often been used to focus on political or social issues, and to explore philosophical issues like the human condition."<br>
-    }</td>
-  </tr>
-
-  <tr>
-    <td>Return data about a director (bio, birth year, death year) by name</td>
-    <td>http://localhost:8080/movies/directors/Wes%20Anderson</td>
-    <td>{
-      "Name": "Wes Anderson",<br>
-      "Bio": "Wesley Wales Anderson (born May 1, 1969) is an American filmmaker. His films are known for their eccentricity, unique visual and narrative styles,[1] and frequent use of ensemble casts. They often contain themes of grief, loss of innocence, and dysfunctional families. Some critics cite Anderson as a modern-day example of an auteur. Three of his films[a] have appeared in BBC Culture's 2016 poll of the greatest films since 2000.",<br>
-      "Birth": 1969
-    }</td>
-  </tr>
-
-  <tr>
-    <td>Allow new users to register</td>
-    <td>http://localhost:8080/users</td>
-    <td>  {<br>
-      "id": 1,<br>
-      "name": "Charlie",<br>
-      "favoriteMovies": [<br>
-        
-      ]br
-    },<br>
-    <br>
-      "id": 2,<br>
-      "name": "Sam",<br>
-      "favoriteMovies": [<br>
-        "The Empire Strikes Back"<br>
-     </td>
-  </tr>
-
-  <tr>
-    <td>Allow users to update their user info (username)</td>
-    <td>http://localhost:8080/users/2</td>
-    <td> "id": 2,<br>
-      "name": "Kim Updated Name",<br>
-      "favoriteMovies": [<br>
-          "The Empire Strikes Back"<br>
-      </td>
-  </tr>
-
-  <tr>
-    <td>Allow users to add a movie to their list of favorites, showing only a text that a movie has been added.</td>
-    <td>http://localhost:8080/users/2/Jaws</td>
-    <td>Jaws has been added to user 2's array</td>
-  </tr>
-
-  <tr>
-    <td>Allow users to remove a movie from their list of favorites, showing only a text that a movie has been removed.</td>
-    <td>http://localhost:8080/users/2/Jaws</td>
-    <td>Jaws has been removed from user 2's array</td>
-  </tr>
-
-  <tr>
-    <td>Allow existing users to deregister, showing only a text that a user email has been removed.</td>
-    <td>http://localhost:8080/users/1</td>
-    <td>user 1 has been deleted</td>
-  </tr>
-
-  <strong>
+    <strong>
       <script src="src/js/promise-polyfill.js"></script>
       <script src="src/js/fetch-polyfill.js"></script>
       <script src="src/js/index.js"></script>
-   </strong>
- 
+    </strong>
   </body>
 </html>
