@@ -31,10 +31,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.use(cors());
+app.options('/users', cors());
 
 let auth = require('./auth')(app);
-
-app.options('/users', cors());
 
 // Create a new user
 app.post('/users', cors(),
