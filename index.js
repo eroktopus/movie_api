@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
+const app = express();
 const passport = require('passport');
 require('./passport');
 
@@ -16,7 +17,6 @@ const Director = require('./models.js').Director;
 const Movie = require('./models.js').Movie;
 const User = Models.User;
 
-const app = express();
 
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -31,12 +31,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.use(cors());
-app.options('/users', cors());
 
 let auth = require('./auth')(app);
 
 // Create a new user
-app.post('/users', cors(),
+app.post('/users',
   [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
