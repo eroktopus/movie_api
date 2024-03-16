@@ -3,16 +3,16 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 const movieSchema = new mongoose.Schema({
-  Title: { type: String, required: true },
-  Description: { type: String, required: true },
-  Genre: [{ type: Schema.Types.ObjectId, ref: 'Genre', required: true }],
-  Director: {
-      Name: String,
-      Bio: String
-  },
-  Actors: [{ type: String }],
-  ImagePath: String,
-  Featured: Boolean
+    Title: { type: String, required: true },
+    Description: { type: String, required: true },
+    Genre: [{ type: Schema.Types.ObjectId, ref: 'Genre', required: true }],
+    Director: {
+        Name: String,
+        Bio: String
+    },
+    Actors: [String],
+    ImagePath: String,
+    Featured: Boolean
 });
 
 let userSchema = mongoose.Schema({
@@ -40,18 +40,6 @@ const directorSchema = new Schema({
 }, { collection: 'directors' });
 
 const Movie = mongoose.model('Movie', movieSchema);
-
-Movie.findById(movieId)
-  .populate('Genre') // Replace Genre ID with Genre document
-  .populate('Director') // Replace Director ID with Director document
-  .exec((err, movie) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    console.log(movie);
-  });
-  
 const User = mongoose.model('User', userSchema);
 const Genre = mongoose.model('Genre', genreSchema);
 const Director = mongoose.model('Director', directorSchema); // Fixed model name
