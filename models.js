@@ -7,7 +7,7 @@ const movieSchema = new mongoose.Schema({
     Description: { type: String, required: true },
     Genre: { type: String, required: true }, 
     Director: { type: String, required: true },
-    Actors: [String],
+    Actors: { type: String, required: true },
     ImagePath: String,
     Featured: Boolean
 });
