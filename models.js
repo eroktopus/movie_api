@@ -15,10 +15,12 @@ const movieSchema = new mongoose.Schema({
     Name: String,
     Bio: String
   },
+  DirectorName: String, // New field to store the director name
   Actors: [String],
   ImagePath: String,
   Featured: Boolean
 });
+
 
 
 let userSchema = mongoose.Schema({
