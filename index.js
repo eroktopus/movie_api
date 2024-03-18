@@ -229,7 +229,7 @@ app.get('/directors/:directorName', async (req, res) => {
 
   // GET requests
   app.get('/', (req, res) => {
-    res.send('myFlix are better than yours!');
+    res.send('myFlix are bester than yours!');
   });
    
   app.use(express.static('public'));
